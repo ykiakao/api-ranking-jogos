@@ -11,6 +11,17 @@ use Illuminate\Http\Request;
 class GameController extends Controller
 {
     /**
+     * Listar jogos
+     *
+     * Retorna os jogos cadastrados com seus IDs para o frontend escolher qual histórico consultar.
+     */
+    public function index()
+    {
+        $games = Game::orderBy('name')->get();
+        return response()->json($games);
+    }
+
+    /**
      * Top semanal
      *
      * Retorna o ranking dos jogos com melhor desempenho na última semana.
@@ -73,6 +84,23 @@ class GameController extends Controller
             ]
         ]);
     }
+
+    /**
+     * Histórico de ranking por query string
+     *
+     * Retorna a evolução de um jogo específico usando o parâmetro `id` na query string.
+     *
+     * @queryParam id int required O ID do jogo. Example: 1
+     */
+    public function historyByQuery(Request $request)
+    {
+        $request->validate([
+            'id' => ['required', 'integer', 'exists:games,id'],
+        ]);
+
+        return $this->history($request->integer('id'));
+    }
+
     /**
      * Ranking por Plataforma
      *

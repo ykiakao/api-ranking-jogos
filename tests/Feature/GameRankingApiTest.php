@@ -54,6 +54,15 @@ class GameRankingApiTest extends TestCase
             ->assertJsonPath('9.name', 'Game 3');
     }
 
+    public function test_games_route_returns_ids_for_frontend_selection(): void
+    {
+        $this->getJsonWithJwt('/api/v1/games')
+            ->assertOk()
+            ->assertJsonCount(12)
+            ->assertJsonPath('0.id', 1)
+            ->assertJsonPath('0.name', 'Game 1');
+    }
+
     public function test_history_returns_score_evolution_for_a_game(): void
     {
         $this->getJsonWithJwt('/api/v1/rankings/history/5')
@@ -65,6 +74,14 @@ class GameRankingApiTest extends TestCase
             ->assertJsonPath('history.1.points', 5000)
             ->assertJsonPath('history.2.period', 'Ano Atual')
             ->assertJsonPath('history.2.points', 50000);
+    }
+
+    public function test_history_can_be_requested_with_query_string_id(): void
+    {
+        $this->getJsonWithJwt('/api/v1/rankings/history?id=6')
+            ->assertOk()
+            ->assertJsonPath('game', 'Game 6')
+            ->assertJsonPath('history.0.points', 600);
     }
 
     public function test_platform_ranking_returns_only_requested_platform_ordered_by_active_players(): void
@@ -82,6 +99,16 @@ class GameRankingApiTest extends TestCase
         $this->getJsonWithJwt('/api/test-auth')
             ->assertOk()
             ->assertJson(['userId' => 'consumer-project']);
+    }
+
+    public function test_can_accept_any_bearer_token_when_enabled_for_demo_integration(): void
+    {
+        config(['jwt.allow_any_token' => true]);
+
+        $this->withHeader('Authorization', 'Bearer token-do-front')
+            ->getJson('/api/v1/rankings/weekly')
+            ->assertOk()
+            ->assertJsonCount(10);
     }
 
     private function getJsonWithJwt(string $uri)

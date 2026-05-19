@@ -145,6 +145,7 @@ Principais variáveis usadas pelo projeto:
 | `JWT_ISSUER` | Emissor esperado no token JWT |
 | `JWT_AUDIENCE` | Audiência esperada no token JWT |
 | `JWT_PUBLIC_KEY_PEM` | Chave pública usada para validar JWT RS256 |
+| `JWT_ALLOW_ANY_TOKEN` | Quando `true`, aceita qualquer Bearer token. Use apenas para integração/demo |
 | `SCRIBE_AUTH_KEY` | Token usado apenas para gerar exemplos 200 na documentação |
 
 ---
@@ -170,6 +171,14 @@ O token precisa:
 * ter assinatura compatível com `JWT_PUBLIC_KEY_PEM`
 
 Sem o header `Authorization`, a API retorna `401`.
+
+Para ambientes de demonstração ou integração inicial com o frontend, é possível configurar:
+
+```env
+JWT_ALLOW_ANY_TOKEN=true
+```
+
+Nesse modo, a API aceita qualquer valor enviado como `Bearer token`. Para produção, mantenha `JWT_ALLOW_ANY_TOKEN=false` e use a validação JWT completa.
 
 ---
 
@@ -220,8 +229,10 @@ Links auxiliares:
 | GET | `/api/v1/rankings/weekly` | Lista o top 10 jogos por pontuação semanal | JWT |
 | GET | `/api/v1/rankings/monthly` | Lista o top 10 jogos por pontuação mensal | JWT |
 | GET | `/api/v1/rankings/yearly` | Lista o top 10 jogos por pontuação anual | JWT |
+| GET | `/api/v1/rankings/history?id={id}` | Retorna o histórico de pontuação usando query string | JWT |
 | GET | `/api/v1/rankings/history/{id}` | Retorna o histórico de pontuação de um jogo | JWT |
 | GET | `/api/v1/rankings/platforms/{platform}` | Lista jogos filtrados por plataforma | JWT |
+| GET | `/api/v1/games` | Lista os jogos cadastrados com seus IDs | JWT |
 | GET | `/api/v1/games/most-played` | Lista o top 10 jogos por jogadores ativos | JWT |
 
 Existe também a rota técnica `GET /api/test-auth`, usada apenas para validar o token JWT. Ela não faz parte da documentação pública principal.
@@ -257,6 +268,24 @@ Accept: application/json
 Authorization: Bearer SEU_TOKEN_JWT
 ```
 
+Histórico de um jogo usando query string:
+
+```http
+GET /api/v1/rankings/history?id=1 HTTP/1.1
+Host: localhost:8000
+Accept: application/json
+Authorization: Bearer SEU_TOKEN_JWT
+```
+
+Listar jogos para o frontend escolher o ID:
+
+```http
+GET /api/v1/games HTTP/1.1
+Host: localhost:8000
+Accept: application/json
+Authorization: Bearer SEU_TOKEN_JWT
+```
+
 ---
 
 ## Exemplo de Resposta
@@ -286,6 +315,7 @@ Authorization: Bearer SEU_TOKEN_JWT
 | 200 | Requisição autenticada com sucesso | Lista de jogos ou histórico |
 | 401 | Token ausente, inválido ou expirado | `{"message":"Missing Authorization header"}` |
 | 404 | Jogo inexistente em `/rankings/history/{id}` | Resposta padrão do Laravel para model não encontrado |
+| 422 | ID ausente ou inválido em `/rankings/history?id={id}` | Erro de validação |
 | 500 | Erro inesperado no servidor | Falha interna |
 
 Observação: quando uma plataforma não possui jogos, `/api/v1/rankings/platforms/{platform}` retorna `200` com lista vazia.

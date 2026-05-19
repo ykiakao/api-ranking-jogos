@@ -20,11 +20,14 @@ class DocumentationRoutesTest extends TestCase
             '/api/v1/rankings/weekly',
             '/api/v1/rankings/monthly',
             '/api/v1/rankings/yearly',
+            '/api/v1/rankings/history',
             '/api/v1/rankings/history/{id}',
             '/api/v1/rankings/platforms/{platform}',
+            '/api/v1/games',
             '/api/v1/games/most-played',
         ], $paths);
 
         $this->assertNotContains('/api/test-auth', $paths);
+        $this->assertNotContains('/api/health', $paths);
     }
 }
