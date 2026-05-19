@@ -11,6 +11,7 @@ class GameRankingApiTest extends TestCase
     use RefreshDatabase;
 
     private string $jwt;
+    private string $privateKey;
 
     protected function setUp(): void
     {
@@ -101,14 +102,21 @@ class GameRankingApiTest extends TestCase
             ->assertJson(['userId' => 'consumer-project']);
     }
 
-    public function test_can_accept_any_bearer_token_when_enabled_for_demo_integration(): void
+    public function test_accepts_token_with_audience_array_containing_expected_audience(): void
     {
-        config(['jwt.allow_any_token' => true]);
+        $this->jwt = $this->makeJwt($this->privateKey, ['other-api', 'ranking-api']);
 
-        $this->withHeader('Authorization', 'Bearer token-do-front')
-            ->getJson('/api/v1/rankings/weekly')
+        $this->getJsonWithJwt('/api/v1/games/most-played')
             ->assertOk()
             ->assertJsonCount(10);
+    }
+
+    public function test_rejects_generic_bearer_token(): void
+    {
+        $this->withHeader('Authorization', 'Bearer token-do-front')
+            ->getJson('/api/v1/rankings/weekly')
+            ->assertUnauthorized()
+            ->assertJson(['message' => 'Invalid or expired token']);
     }
 
     private function getJsonWithJwt(string $uri)
@@ -125,6 +133,7 @@ class GameRankingApiTest extends TestCase
         ]);
 
         openssl_pkey_export($key, $privateKey);
+        $this->privateKey = $privateKey;
         $publicKey = openssl_pkey_get_details($key)['key'];
 
         config([
@@ -136,14 +145,14 @@ class GameRankingApiTest extends TestCase
         $this->jwt = $this->makeJwt($privateKey);
     }
 
-    private function makeJwt(string $privateKey): string
+    private function makeJwt(string $privateKey, string|array $audience = 'ranking-api'): string
     {
         $encode = fn (string $value): string => rtrim(strtr(base64_encode($value), '+/', '-_'), '=');
 
         $header = $encode(json_encode(['alg' => 'RS256', 'typ' => 'JWT']));
         $payload = $encode(json_encode([
             'iss' => 'gameverse-auth',
-            'aud' => 'ranking-api',
+            'aud' => $audience,
             'sub' => 'consumer-project',
             'iat' => time(),
             'exp' => time() + 3600,

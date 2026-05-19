@@ -22,15 +22,6 @@ class JwtAuthMiddleware
 
             $token = $matches[1];
 
-            if (config('jwt.allow_any_token')) {
-                $request->attributes->set('auth', [
-                    'id' => $this->subjectFromUnverifiedToken($token),
-                    'token' => $token
-                ]);
-
-                return $next($request);
-            }
-
             [$header, $payload, $signature] = $this->decodeToken($token);
 
             if (($header['alg'] ?? null) !== 'RS256') {
@@ -40,7 +31,7 @@ class JwtAuthMiddleware
             if (
                 !$this->signatureIsValid($token, $signature) ||
                 ($payload['iss'] ?? null) !== config('jwt.issuer') ||
-                ($payload['aud'] ?? null) !== config('jwt.audience') ||
+                !$this->audienceIsValid($payload['aud'] ?? null) ||
                 empty($payload['sub']) ||
                 $this->tokenIsExpired($payload)
             ) {
@@ -123,19 +114,19 @@ class JwtAuthMiddleware
         return time() >= (int) $payload['exp'];
     }
 
-    private function subjectFromUnverifiedToken(string $token): string
+    private function audienceIsValid(mixed $audience): bool
     {
-        $parts = explode('.', $token);
+        $expectedAudience = config('jwt.audience');
 
-        if (count($parts) !== 3) {
-            return 'external-consumer';
+        if (is_string($audience)) {
+            return $audience === $expectedAudience;
         }
 
-        try {
-            $payload = $this->base64UrlDecodeJson($parts[1]);
-            return (string) ($payload['sub'] ?? 'external-consumer');
-        } catch (\Exception $e) {
-            return 'external-consumer';
+        if (is_array($audience)) {
+            return in_array($expectedAudience, $audience, true);
         }
+
+        return false;
     }
+
 }

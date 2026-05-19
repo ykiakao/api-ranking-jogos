@@ -142,10 +142,9 @@ Principais variáveis usadas pelo projeto:
 | `APP_DEBUG` | Ativa ou desativa debug |
 | `APP_URL` | URL base da aplicação |
 | `DB_CONNECTION` | Driver do banco, atualmente `sqlite` |
-| `JWT_ISSUER` | Emissor esperado no token JWT |
-| `JWT_AUDIENCE` | Audiência esperada no token JWT |
+| `JWT_ISSUER` | Emissor esperado no token JWT: `https://sistema-distribuido-trabalho-faculd.vercel.app` |
+| `JWT_AUDIENCE` | Audiência esperada no token JWT: `internal-apis` |
 | `JWT_PUBLIC_KEY_PEM` | Chave pública usada para validar JWT RS256 |
-| `JWT_ALLOW_ANY_TOKEN` | Quando `true`, aceita qualquer Bearer token. Use apenas para integração/demo |
 | `SCRIBE_AUTH_KEY` | Token usado apenas para gerar exemplos 200 na documentação |
 
 ---
@@ -171,14 +170,6 @@ O token precisa:
 * ter assinatura compatível com `JWT_PUBLIC_KEY_PEM`
 
 Sem o header `Authorization`, a API retorna `401`.
-
-Para ambientes de demonstração ou integração inicial com o frontend, é possível configurar:
-
-```env
-JWT_ALLOW_ANY_TOKEN=true
-```
-
-Nesse modo, a API aceita qualquer valor enviado como `Bearer token`. Para produção, mantenha `JWT_ALLOW_ANY_TOKEN=false` e use a validação JWT completa.
 
 ---
 

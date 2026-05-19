@@ -17,6 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::redirect('/games/most-played', '/api/v1/games/most-played');
+
 Route::get('/health', function () {
     return response('ok', 200);
 });
