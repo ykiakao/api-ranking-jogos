@@ -29,7 +29,6 @@ O projeto contém apenas o backend da API. A interface visual do usuário final 
 * Fornecer ranking semanal, mensal e anual de jogos
 * Listar os jogos mais jogados
 * Consultar histórico de pontuação de um jogo
-* Filtrar rankings por plataforma
 * Retornar dados estatísticos em formato JSON
 * Proteger as rotas da API usando JWT
 * Disponibilizar documentação interativa com Scribe
@@ -197,19 +196,13 @@ Gere a documentação:
 php artisan scribe:generate
 ```
 
-Acesse:
+Para deploy, as rotas públicas do Scribe ficam desabilitadas para que a API exponha somente os endpoints de consumo. Os arquivos gerados ficam disponíveis no projeto:
 
-```text
-http://localhost:8000/docs
-```
-
-Links auxiliares:
-
-| Recurso | URL |
-| ------- | --- |
-| Documentação interativa | `http://localhost:8000/docs` |
-| Collection Postman | `http://localhost:8000/docs.postman` |
-| OpenAPI | `http://localhost:8000/docs.openapi` |
+| Recurso | Caminho |
+| ------- | ------- |
+| Documentação HTML | `resources/views/scribe/index.blade.php` |
+| Collection Postman | `storage/app/scribe/collection.json` |
+| OpenAPI | `storage/app/scribe/openapi.yaml` |
 
 ---
 
@@ -220,13 +213,8 @@ Links auxiliares:
 | GET | `/api/v1/rankings/weekly` | Lista o top 10 jogos por pontuação semanal | JWT |
 | GET | `/api/v1/rankings/monthly` | Lista o top 10 jogos por pontuação mensal | JWT |
 | GET | `/api/v1/rankings/yearly` | Lista o top 10 jogos por pontuação anual | JWT |
-| GET | `/api/v1/rankings/history?id={id}` | Retorna o histórico de pontuação usando query string | JWT |
 | GET | `/api/v1/rankings/history/{id}` | Retorna o histórico de pontuação de um jogo | JWT |
-| GET | `/api/v1/rankings/platforms/{platform}` | Lista jogos filtrados por plataforma | JWT |
-| GET | `/api/v1/games` | Lista os jogos cadastrados com seus IDs | JWT |
 | GET | `/api/v1/games/most-played` | Lista o top 10 jogos por jogadores ativos | JWT |
-
-Existe também a rota técnica `GET /api/test-auth`, usada apenas para validar o token JWT. Ela não faz parte da documentação pública principal.
 
 ---
 
@@ -241,15 +229,6 @@ Accept: application/json
 Authorization: Bearer SEU_TOKEN_JWT
 ```
 
-Ranking por plataforma:
-
-```http
-GET /api/v1/rankings/platforms/Steam HTTP/1.1
-Host: localhost:8000
-Accept: application/json
-Authorization: Bearer SEU_TOKEN_JWT
-```
-
 Histórico de um jogo:
 
 ```http
@@ -259,19 +238,10 @@ Accept: application/json
 Authorization: Bearer SEU_TOKEN_JWT
 ```
 
-Histórico de um jogo usando query string:
+Jogos mais jogados:
 
 ```http
-GET /api/v1/rankings/history?id=1 HTTP/1.1
-Host: localhost:8000
-Accept: application/json
-Authorization: Bearer SEU_TOKEN_JWT
-```
-
-Listar jogos para o frontend escolher o ID:
-
-```http
-GET /api/v1/games HTTP/1.1
+GET /api/v1/games/most-played HTTP/1.1
 Host: localhost:8000
 Accept: application/json
 Authorization: Bearer SEU_TOKEN_JWT
@@ -306,10 +276,7 @@ Authorization: Bearer SEU_TOKEN_JWT
 | 200 | Requisição autenticada com sucesso | Lista de jogos ou histórico |
 | 401 | Token ausente, inválido ou expirado | `{"message":"Missing Authorization header"}` |
 | 404 | Jogo inexistente em `/rankings/history/{id}` | Resposta padrão do Laravel para model não encontrado |
-| 422 | ID ausente ou inválido em `/rankings/history?id={id}` | Erro de validação |
 | 500 | Erro inesperado no servidor | Falha interna |
-
-Observação: quando uma plataforma não possui jogos, `/api/v1/rankings/platforms/{platform}` retorna `200` com lista vazia.
 
 ---
 
@@ -327,8 +294,6 @@ Os testes cobrem:
 * ranking semanal, mensal e anual
 * jogos mais jogados
 * histórico por jogo
-* filtro por plataforma
-* rota técnica de teste de autenticação
 * correspondência entre OpenAPI/Scribe e rotas públicas da API
 
 ---

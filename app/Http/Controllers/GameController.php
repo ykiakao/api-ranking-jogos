@@ -3,24 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
-use Illuminate\Http\Request;
 
 /**
  * @group Rankings
  */
 class GameController extends Controller
 {
-    /**
-     * Listar jogos
-     *
-     * Retorna os jogos cadastrados com seus IDs para o frontend escolher qual histórico consultar.
-     */
-    public function index()
-    {
-        $games = Game::orderBy('name')->get();
-        return response()->json($games);
-    }
-
     /**
      * Top semanal
      *
@@ -85,35 +73,4 @@ class GameController extends Controller
         ]);
     }
 
-    /**
-     * Histórico de ranking por query string
-     *
-     * Retorna a evolução de um jogo específico usando o parâmetro `id` na query string.
-     *
-     * @queryParam id int required O ID do jogo. Example: 1
-     */
-    public function historyByQuery(Request $request)
-    {
-        $request->validate([
-            'id' => ['required', 'integer', 'exists:games,id'],
-        ]);
-
-        return $this->history($request->integer('id'));
-    }
-
-    /**
-     * Ranking por Plataforma
-     *
-     * Retorna os jogos mais bem ranqueados de uma plataforma específica.
-     *
-     * @urlParam platform string required O nome da plataforma. Example: Steam
-     */
-    public function platformRanking($platform)
-    {
-        $games = Game::where('platform', $platform)
-                     ->orderBy('active_players', 'desc')
-                     ->get();
-                     
-        return response()->json($games);
-    }
 }

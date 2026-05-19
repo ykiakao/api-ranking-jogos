@@ -32,20 +32,20 @@ endpoints:
     responses:
       -
         custom: []
-        status: 200
-        content: '[{"id":11,"name":"Apex Legends","platform":"Steam","active_players":218457,"weekly_points":945,"monthly_points":8776,"yearly_points":56526,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":12,"name":"Call of Duty: Warzone","platform":"Battle.net","active_players":243114,"weekly_points":877,"monthly_points":2426,"yearly_points":36655,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":14,"name":"Cyberpunk 2077","platform":"Steam","active_players":1161973,"weekly_points":874,"monthly_points":4853,"yearly_points":27988,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":8,"name":"EA SPORTS FC 24","platform":"Steam","active_players":398998,"weekly_points":872,"monthly_points":5333,"yearly_points":81468,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":10,"name":"League of Legends","platform":"Riot Launcher","active_players":1166370,"weekly_points":786,"monthly_points":4506,"yearly_points":21445,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":9,"name":"Roblox","platform":"Multiplataforma","active_players":991415,"weekly_points":770,"monthly_points":2080,"yearly_points":22209,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":1,"name":"Counter-Strike 2","platform":"Steam","active_players":1086549,"weekly_points":729,"monthly_points":1215,"yearly_points":71182,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":15,"name":"Stardew Valley","platform":"Steam","active_players":1117483,"weekly_points":702,"monthly_points":7545,"yearly_points":42912,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":2,"name":"Elden Ring","platform":"Steam","active_players":715531,"weekly_points":697,"monthly_points":7369,"yearly_points":44291,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":4,"name":"Helldivers 2","platform":"Steam","active_players":217823,"weekly_points":617,"monthly_points":5232,"yearly_points":24531,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"}]'
+        status: 401
+        content: '{"message":"Invalid or expired token"}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '59'
+          x-ratelimit-remaining: '54'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnYW1ldmVyc2UtYXV0aCIsImF1ZCI6InJhbmtpbmctYXBpIiwic3ViIjoiZGVtby11c2VyIiwiaWF0IjoxNzc5MTQxNTcxLCJleHAiOjE4MTA2Nzc1NzF9.aiCMcNXMs1GxvGqY5Ln87D1VJG-J2CzQ2lktqJstEzm2ogcj9M4WxI1ye2Ps3p4IHExr5IQ9KwoNn3hTgnDI5C8LiMmRa6yqdB8ZlrkZZ_eSlNxFhuAhGiCIqLsQwHony4UpxFjS1MpSuJKPyY1Z4VSulOzUExcTt0Y-G1ynq8IYnsfjqoCTP20oQGP2pb2TTbZFf4jACxctnz2oIijvgWEMAiqn72G4DJ-8nWFXZ9Yf6Of2S76MDLtWjysgFoQQYriye_Ns9ynoPjIo9igUCFyzc_AgIjh_VE0IrGW9ifkx5kOISf0b95bh7rhMuDzyvBQbFay7lIUyKMRKi_i-qw'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -78,20 +78,20 @@ endpoints:
     responses:
       -
         custom: []
-        status: 200
-        content: '[{"id":13,"name":"Minecraft","platform":"Multiplataforma","active_players":242066,"weekly_points":184,"monthly_points":9278,"yearly_points":33053,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":11,"name":"Apex Legends","platform":"Steam","active_players":218457,"weekly_points":945,"monthly_points":8776,"yearly_points":56526,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":15,"name":"Stardew Valley","platform":"Steam","active_players":1117483,"weekly_points":702,"monthly_points":7545,"yearly_points":42912,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":2,"name":"Elden Ring","platform":"Steam","active_players":715531,"weekly_points":697,"monthly_points":7369,"yearly_points":44291,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":6,"name":"Fortnite","platform":"Epic Games","active_players":1091171,"weekly_points":611,"monthly_points":5678,"yearly_points":96832,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":8,"name":"EA SPORTS FC 24","platform":"Steam","active_players":398998,"weekly_points":872,"monthly_points":5333,"yearly_points":81468,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":4,"name":"Helldivers 2","platform":"Steam","active_players":217823,"weekly_points":617,"monthly_points":5232,"yearly_points":24531,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":14,"name":"Cyberpunk 2077","platform":"Steam","active_players":1161973,"weekly_points":874,"monthly_points":4853,"yearly_points":27988,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":10,"name":"League of Legends","platform":"Riot Launcher","active_players":1166370,"weekly_points":786,"monthly_points":4506,"yearly_points":21445,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":5,"name":"Baldur''s Gate 3","platform":"Steam","active_players":296988,"weekly_points":352,"monthly_points":3595,"yearly_points":62260,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"}]'
+        status: 401
+        content: '{"message":"Invalid or expired token"}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '58'
+          x-ratelimit-remaining: '53'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnYW1ldmVyc2UtYXV0aCIsImF1ZCI6InJhbmtpbmctYXBpIiwic3ViIjoiZGVtby11c2VyIiwiaWF0IjoxNzc5MTQxNTcxLCJleHAiOjE4MTA2Nzc1NzF9.aiCMcNXMs1GxvGqY5Ln87D1VJG-J2CzQ2lktqJstEzm2ogcj9M4WxI1ye2Ps3p4IHExr5IQ9KwoNn3hTgnDI5C8LiMmRa6yqdB8ZlrkZZ_eSlNxFhuAhGiCIqLsQwHony4UpxFjS1MpSuJKPyY1Z4VSulOzUExcTt0Y-G1ynq8IYnsfjqoCTP20oQGP2pb2TTbZFf4jACxctnz2oIijvgWEMAiqn72G4DJ-8nWFXZ9Yf6Of2S76MDLtWjysgFoQQYriye_Ns9ynoPjIo9igUCFyzc_AgIjh_VE0IrGW9ifkx5kOISf0b95bh7rhMuDzyvBQbFay7lIUyKMRKi_i-qw'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -124,90 +124,20 @@ endpoints:
     responses:
       -
         custom: []
-        status: 200
-        content: '[{"id":6,"name":"Fortnite","platform":"Epic Games","active_players":1091171,"weekly_points":611,"monthly_points":5678,"yearly_points":96832,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":8,"name":"EA SPORTS FC 24","platform":"Steam","active_players":398998,"weekly_points":872,"monthly_points":5333,"yearly_points":81468,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":1,"name":"Counter-Strike 2","platform":"Steam","active_players":1086549,"weekly_points":729,"monthly_points":1215,"yearly_points":71182,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":7,"name":"Grand Theft Auto V","platform":"Steam","active_players":262363,"weekly_points":199,"monthly_points":2257,"yearly_points":62350,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":5,"name":"Baldur''s Gate 3","platform":"Steam","active_players":296988,"weekly_points":352,"monthly_points":3595,"yearly_points":62260,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":3,"name":"Valorant","platform":"Riot Launcher","active_players":821498,"weekly_points":241,"monthly_points":1030,"yearly_points":57266,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":11,"name":"Apex Legends","platform":"Steam","active_players":218457,"weekly_points":945,"monthly_points":8776,"yearly_points":56526,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":2,"name":"Elden Ring","platform":"Steam","active_players":715531,"weekly_points":697,"monthly_points":7369,"yearly_points":44291,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":15,"name":"Stardew Valley","platform":"Steam","active_players":1117483,"weekly_points":702,"monthly_points":7545,"yearly_points":42912,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":12,"name":"Call of Duty: Warzone","platform":"Battle.net","active_players":243114,"weekly_points":877,"monthly_points":2426,"yearly_points":36655,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"}]'
+        status: 401
+        content: '{"message":"Invalid or expired token"}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '57'
+          x-ratelimit-remaining: '52'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnYW1ldmVyc2UtYXV0aCIsImF1ZCI6InJhbmtpbmctYXBpIiwic3ViIjoiZGVtby11c2VyIiwiaWF0IjoxNzc5MTQxNTcxLCJleHAiOjE4MTA2Nzc1NzF9.aiCMcNXMs1GxvGqY5Ln87D1VJG-J2CzQ2lktqJstEzm2ogcj9M4WxI1ye2Ps3p4IHExr5IQ9KwoNn3hTgnDI5C8LiMmRa6yqdB8ZlrkZZ_eSlNxFhuAhGiCIqLsQwHony4UpxFjS1MpSuJKPyY1Z4VSulOzUExcTt0Y-G1ynq8IYnsfjqoCTP20oQGP2pb2TTbZFf4jACxctnz2oIijvgWEMAiqn72G4DJ-8nWFXZ9Yf6Of2S76MDLtWjysgFoQQYriye_Ns9ynoPjIo9igUCFyzc_AgIjh_VE0IrGW9ifkx5kOISf0b95bh7rhMuDzyvBQbFay7lIUyKMRKi_i-qw'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: api/v1/rankings/history
-    metadata:
-      custom: []
-      groupName: Rankings
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Histórico de ranking por query string'
-      description: 'Retorna a evolução de um jogo específico usando o parâmetro `id` na query string.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_JWT_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters:
-      id:
-        custom: []
-        name: id
-        description: 'O ID do jogo.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanQueryParameters:
-      id: 1
-    bodyParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The <code>id</code> of an existing record in the games table.'
-        required: true
-        example: 16
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanBodyParameters:
-      id: 16
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 422
-        content: '{"message":"The selected id is invalid.","errors":{"id":["The selected id is invalid."]}}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '56'
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnYW1ldmVyc2UtYXV0aCIsImF1ZCI6InJhbmtpbmctYXBpIiwic3ViIjoiZGVtby11c2VyIiwiaWF0IjoxNzc5MTQxNTcxLCJleHAiOjE4MTA2Nzc1NzF9.aiCMcNXMs1GxvGqY5Ln87D1VJG-J2CzQ2lktqJstEzm2ogcj9M4WxI1ye2Ps3p4IHExr5IQ9KwoNn3hTgnDI5C8LiMmRa6yqdB8ZlrkZZ_eSlNxFhuAhGiCIqLsQwHony4UpxFjS1MpSuJKPyY1Z4VSulOzUExcTt0Y-G1ynq8IYnsfjqoCTP20oQGP2pb2TTbZFf4jACxctnz2oIijvgWEMAiqn72G4DJ-8nWFXZ9Yf6Of2S76MDLtWjysgFoQQYriye_Ns9ynoPjIo9igUCFyzc_AgIjh_VE0IrGW9ifkx5kOISf0b95bh7rhMuDzyvBQbFay7lIUyKMRKi_i-qw'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -252,124 +182,20 @@ endpoints:
     responses:
       -
         custom: []
-        status: 200
-        content: '{"game":"Counter-Strike 2","history":[{"period":"Semana 1","points":729},{"period":"M\u00eas Atual","points":1215},{"period":"Ano Atual","points":71182}]}'
+        status: 401
+        content: '{"message":"Invalid or expired token"}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '55'
+          x-ratelimit-remaining: '51'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnYW1ldmVyc2UtYXV0aCIsImF1ZCI6InJhbmtpbmctYXBpIiwic3ViIjoiZGVtby11c2VyIiwiaWF0IjoxNzc5MTQxNTcxLCJleHAiOjE4MTA2Nzc1NzF9.aiCMcNXMs1GxvGqY5Ln87D1VJG-J2CzQ2lktqJstEzm2ogcj9M4WxI1ye2Ps3p4IHExr5IQ9KwoNn3hTgnDI5C8LiMmRa6yqdB8ZlrkZZ_eSlNxFhuAhGiCIqLsQwHony4UpxFjS1MpSuJKPyY1Z4VSulOzUExcTt0Y-G1ynq8IYnsfjqoCTP20oQGP2pb2TTbZFf4jACxctnz2oIijvgWEMAiqn72G4DJ-8nWFXZ9Yf6Of2S76MDLtWjysgFoQQYriye_Ns9ynoPjIo9igUCFyzc_AgIjh_VE0IrGW9ifkx5kOISf0b95bh7rhMuDzyvBQbFay7lIUyKMRKi_i-qw'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: 'api/v1/rankings/platforms/{platform}'
-    metadata:
-      custom: []
-      groupName: Rankings
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Ranking por Plataforma'
-      description: 'Retorna os jogos mais bem ranqueados de uma plataforma específica.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_JWT_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      platform:
-        custom: []
-        name: platform
-        description: 'O nome da plataforma.'
-        required: true
-        example: Steam
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      platform: Steam
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: '[{"id":14,"name":"Cyberpunk 2077","platform":"Steam","active_players":1161973,"weekly_points":874,"monthly_points":4853,"yearly_points":27988,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":15,"name":"Stardew Valley","platform":"Steam","active_players":1117483,"weekly_points":702,"monthly_points":7545,"yearly_points":42912,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":1,"name":"Counter-Strike 2","platform":"Steam","active_players":1086549,"weekly_points":729,"monthly_points":1215,"yearly_points":71182,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":2,"name":"Elden Ring","platform":"Steam","active_players":715531,"weekly_points":697,"monthly_points":7369,"yearly_points":44291,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":8,"name":"EA SPORTS FC 24","platform":"Steam","active_players":398998,"weekly_points":872,"monthly_points":5333,"yearly_points":81468,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":5,"name":"Baldur''s Gate 3","platform":"Steam","active_players":296988,"weekly_points":352,"monthly_points":3595,"yearly_points":62260,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":7,"name":"Grand Theft Auto V","platform":"Steam","active_players":262363,"weekly_points":199,"monthly_points":2257,"yearly_points":62350,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":11,"name":"Apex Legends","platform":"Steam","active_players":218457,"weekly_points":945,"monthly_points":8776,"yearly_points":56526,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":4,"name":"Helldivers 2","platform":"Steam","active_players":217823,"weekly_points":617,"monthly_points":5232,"yearly_points":24531,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"}]'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '54'
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnYW1ldmVyc2UtYXV0aCIsImF1ZCI6InJhbmtpbmctYXBpIiwic3ViIjoiZGVtby11c2VyIiwiaWF0IjoxNzc5MTQxNTcxLCJleHAiOjE4MTA2Nzc1NzF9.aiCMcNXMs1GxvGqY5Ln87D1VJG-J2CzQ2lktqJstEzm2ogcj9M4WxI1ye2Ps3p4IHExr5IQ9KwoNn3hTgnDI5C8LiMmRa6yqdB8ZlrkZZ_eSlNxFhuAhGiCIqLsQwHony4UpxFjS1MpSuJKPyY1Z4VSulOzUExcTt0Y-G1ynq8IYnsfjqoCTP20oQGP2pb2TTbZFf4jACxctnz2oIijvgWEMAiqn72G4DJ-8nWFXZ9Yf6Of2S76MDLtWjysgFoQQYriye_Ns9ynoPjIo9igUCFyzc_AgIjh_VE0IrGW9ifkx5kOISf0b95bh7rhMuDzyvBQbFay7lIUyKMRKi_i-qw'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: api/v1/games
-    metadata:
-      custom: []
-      groupName: Rankings
-      groupDescription: ''
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Listar jogos'
-      description: 'Retorna os jogos cadastrados com seus IDs para o frontend escolher qual histórico consultar.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_JWT_TOKEN}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: '[{"id":11,"name":"Apex Legends","platform":"Steam","active_players":218457,"weekly_points":945,"monthly_points":8776,"yearly_points":56526,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":5,"name":"Baldur''s Gate 3","platform":"Steam","active_players":296988,"weekly_points":352,"monthly_points":3595,"yearly_points":62260,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":12,"name":"Call of Duty: Warzone","platform":"Battle.net","active_players":243114,"weekly_points":877,"monthly_points":2426,"yearly_points":36655,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":1,"name":"Counter-Strike 2","platform":"Steam","active_players":1086549,"weekly_points":729,"monthly_points":1215,"yearly_points":71182,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":14,"name":"Cyberpunk 2077","platform":"Steam","active_players":1161973,"weekly_points":874,"monthly_points":4853,"yearly_points":27988,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":8,"name":"EA SPORTS FC 24","platform":"Steam","active_players":398998,"weekly_points":872,"monthly_points":5333,"yearly_points":81468,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":2,"name":"Elden Ring","platform":"Steam","active_players":715531,"weekly_points":697,"monthly_points":7369,"yearly_points":44291,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":6,"name":"Fortnite","platform":"Epic Games","active_players":1091171,"weekly_points":611,"monthly_points":5678,"yearly_points":96832,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":7,"name":"Grand Theft Auto V","platform":"Steam","active_players":262363,"weekly_points":199,"monthly_points":2257,"yearly_points":62350,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":4,"name":"Helldivers 2","platform":"Steam","active_players":217823,"weekly_points":617,"monthly_points":5232,"yearly_points":24531,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":10,"name":"League of Legends","platform":"Riot Launcher","active_players":1166370,"weekly_points":786,"monthly_points":4506,"yearly_points":21445,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":13,"name":"Minecraft","platform":"Multiplataforma","active_players":242066,"weekly_points":184,"monthly_points":9278,"yearly_points":33053,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":9,"name":"Roblox","platform":"Multiplataforma","active_players":991415,"weekly_points":770,"monthly_points":2080,"yearly_points":22209,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":15,"name":"Stardew Valley","platform":"Steam","active_players":1117483,"weekly_points":702,"monthly_points":7545,"yearly_points":42912,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":3,"name":"Valorant","platform":"Riot Launcher","active_players":821498,"weekly_points":241,"monthly_points":1030,"yearly_points":57266,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"}]'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '53'
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnYW1ldmVyc2UtYXV0aCIsImF1ZCI6InJhbmtpbmctYXBpIiwic3ViIjoiZGVtby11c2VyIiwiaWF0IjoxNzc5MTQxNTcxLCJleHAiOjE4MTA2Nzc1NzF9.aiCMcNXMs1GxvGqY5Ln87D1VJG-J2CzQ2lktqJstEzm2ogcj9M4WxI1ye2Ps3p4IHExr5IQ9KwoNn3hTgnDI5C8LiMmRa6yqdB8ZlrkZZ_eSlNxFhuAhGiCIqLsQwHony4UpxFjS1MpSuJKPyY1Z4VSulOzUExcTt0Y-G1ynq8IYnsfjqoCTP20oQGP2pb2TTbZFf4jACxctnz2oIijvgWEMAiqn72G4DJ-8nWFXZ9Yf6Of2S76MDLtWjysgFoQQYriye_Ns9ynoPjIo9igUCFyzc_AgIjh_VE0IrGW9ifkx5kOISf0b95bh7rhMuDzyvBQbFay7lIUyKMRKi_i-qw'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -402,20 +228,20 @@ endpoints:
     responses:
       -
         custom: []
-        status: 200
-        content: '[{"id":10,"name":"League of Legends","platform":"Riot Launcher","active_players":1166370,"weekly_points":786,"monthly_points":4506,"yearly_points":21445,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":14,"name":"Cyberpunk 2077","platform":"Steam","active_players":1161973,"weekly_points":874,"monthly_points":4853,"yearly_points":27988,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":15,"name":"Stardew Valley","platform":"Steam","active_players":1117483,"weekly_points":702,"monthly_points":7545,"yearly_points":42912,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":6,"name":"Fortnite","platform":"Epic Games","active_players":1091171,"weekly_points":611,"monthly_points":5678,"yearly_points":96832,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":1,"name":"Counter-Strike 2","platform":"Steam","active_players":1086549,"weekly_points":729,"monthly_points":1215,"yearly_points":71182,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":9,"name":"Roblox","platform":"Multiplataforma","active_players":991415,"weekly_points":770,"monthly_points":2080,"yearly_points":22209,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":3,"name":"Valorant","platform":"Riot Launcher","active_players":821498,"weekly_points":241,"monthly_points":1030,"yearly_points":57266,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":2,"name":"Elden Ring","platform":"Steam","active_players":715531,"weekly_points":697,"monthly_points":7369,"yearly_points":44291,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":8,"name":"EA SPORTS FC 24","platform":"Steam","active_players":398998,"weekly_points":872,"monthly_points":5333,"yearly_points":81468,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"},{"id":5,"name":"Baldur''s Gate 3","platform":"Steam","active_players":296988,"weekly_points":352,"monthly_points":3595,"yearly_points":62260,"created_at":"2026-05-18T21:57:31.000000Z","updated_at":"2026-05-18T21:57:31.000000Z"}]'
+        status: 401
+        content: '{"message":"Invalid or expired token"}'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '52'
+          x-ratelimit-remaining: '50'
           access-control-allow-origin: '*'
         description: null
     responseFields: []
     auth:
       - headers
       - Authorization
-      - 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnYW1ldmVyc2UtYXV0aCIsImF1ZCI6InJhbmtpbmctYXBpIiwic3ViIjoiZGVtby11c2VyIiwiaWF0IjoxNzc5MTQxNTcxLCJleHAiOjE4MTA2Nzc1NzF9.aiCMcNXMs1GxvGqY5Ln87D1VJG-J2CzQ2lktqJstEzm2ogcj9M4WxI1ye2Ps3p4IHExr5IQ9KwoNn3hTgnDI5C8LiMmRa6yqdB8ZlrkZZ_eSlNxFhuAhGiCIqLsQwHony4UpxFjS1MpSuJKPyY1Z4VSulOzUExcTt0Y-G1ynq8IYnsfjqoCTP20oQGP2pb2TTbZFf4jACxctnz2oIijvgWEMAiqn72G4DJ-8nWFXZ9Yf6Of2S76MDLtWjysgFoQQYriye_Ns9ynoPjIo9igUCFyzc_AgIjh_VE0IrGW9ifkx5kOISf0b95bh7rhMuDzyvBQbFay7lIUyKMRKi_i-qw'
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

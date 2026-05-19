@@ -55,15 +55,6 @@ class GameRankingApiTest extends TestCase
             ->assertJsonPath('9.name', 'Game 3');
     }
 
-    public function test_games_route_returns_ids_for_frontend_selection(): void
-    {
-        $this->getJsonWithJwt('/api/v1/games')
-            ->assertOk()
-            ->assertJsonCount(12)
-            ->assertJsonPath('0.id', 1)
-            ->assertJsonPath('0.name', 'Game 1');
-    }
-
     public function test_history_returns_score_evolution_for_a_game(): void
     {
         $this->getJsonWithJwt('/api/v1/rankings/history/5')
@@ -75,31 +66,6 @@ class GameRankingApiTest extends TestCase
             ->assertJsonPath('history.1.points', 5000)
             ->assertJsonPath('history.2.period', 'Ano Atual')
             ->assertJsonPath('history.2.points', 50000);
-    }
-
-    public function test_history_can_be_requested_with_query_string_id(): void
-    {
-        $this->getJsonWithJwt('/api/v1/rankings/history?id=6')
-            ->assertOk()
-            ->assertJsonPath('game', 'Game 6')
-            ->assertJsonPath('history.0.points', 600);
-    }
-
-    public function test_platform_ranking_returns_only_requested_platform_ordered_by_active_players(): void
-    {
-        $this->getJsonWithJwt('/api/v1/rankings/platforms/Steam')
-            ->assertOk()
-            ->assertJsonCount(6)
-            ->assertJsonPath('0.name', 'Game 12')
-            ->assertJsonPath('5.name', 'Game 2')
-            ->assertJsonMissing(['platform' => 'Riot Launcher']);
-    }
-
-    public function test_test_auth_route_returns_authenticated_subject(): void
-    {
-        $this->getJsonWithJwt('/api/test-auth')
-            ->assertOk()
-            ->assertJson(['userId' => 'consumer-project']);
     }
 
     public function test_accepts_token_with_audience_array_containing_expected_audience(): void

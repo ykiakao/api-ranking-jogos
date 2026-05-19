@@ -18,7 +18,7 @@ return [
 
     // Text to place in the "Introduction" section, right after the `description`. Markdown and HTML are supported.
     'intro_text' => <<<'INTRO'
-            Esta API expõe rankings semanais, mensais e anuais, jogos mais jogados, histórico de pontuação e filtros por plataforma.
+            Esta API expõe rankings semanais, mensais e anuais, jogos mais jogados e histórico de pontuação.
 
             <aside>Use os exemplos da documentação para demonstrar como o frontend ou outros microsserviços podem consumir os dados de ranking.</aside>
         INTRO,
@@ -44,10 +44,7 @@ return [
             ],
 
             // Exclude these routes even if they matched the rules above.
-            'exclude' => [
-                'GET api/test-auth',
-                'GET api/health',
-            ],
+            'exclude' => [],
         ],
     ],
 
@@ -68,7 +65,7 @@ return [
 
     'laravel' => [
         // Whether to automatically create a docs route for you to view your generated docs. You can still set up routing manually.
-        'add_routes' => true,
+        'add_routes' => false,
 
         // URL path to use for the docs endpoint (if `add_routes` is true).
         // By default, `/docs` opens the HTML page, `/docs.postman` opens the Postman collection, and `/docs.openapi` the OpenAPI spec.
