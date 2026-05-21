@@ -79,6 +79,8 @@ Route::get('/health-check-key', function () {
 
     $publicKeyResource = openssl_pkey_get_public($formattedPublicKey);
     $openSslErrors = [];
+    $publicKeyDetails = $publicKeyResource === false ? null : openssl_pkey_get_details($publicKeyResource);
+    $publicKeyPem = is_array($publicKeyDetails) ? ($publicKeyDetails['key'] ?? null) : null;
 
     while (($error = openssl_error_string()) !== false) {
         $openSslErrors[] = $error;
@@ -95,6 +97,7 @@ Route::get('/health-check-key', function () {
         'has_end_marker' => str_contains($rawPublicKey, '-----END PUBLIC KEY-----'),
         'has_rsa_end_marker' => str_contains($rawPublicKey, '-----END RSA PUBLIC KEY-----'),
         'openssl_accepted' => $publicKeyResource !== false,
+        'public_key_fingerprint_sha256' => is_string($publicKeyPem) ? hash('sha256', $publicKeyPem) : null,
         'openssl_errors' => $openSslErrors,
     ]);
 });
@@ -191,6 +194,8 @@ Route::get('/health-check-token', function (\Illuminate\Http\Request $request) {
     }
 
     $publicKeyResource = openssl_pkey_get_public($formattedPublicKey);
+    $publicKeyDetails = $publicKeyResource === false ? null : openssl_pkey_get_details($publicKeyResource);
+    $publicKeyPem = is_array($publicKeyDetails) ? ($publicKeyDetails['key'] ?? null) : null;
     $signatureResult = $publicKeyResource === false
         ? false
         : openssl_verify($parts[0] . '.' . $parts[1], $signature, $publicKeyResource, OPENSSL_ALGO_SHA256);
@@ -221,6 +226,8 @@ Route::get('/health-check-token', function (\Illuminate\Http\Request $request) {
         ],
         'checks' => [
             'public_key_loaded' => $publicKeyResource !== false,
+            'public_key_fingerprint_sha256' => is_string($publicKeyPem) ? hash('sha256', $publicKeyPem) : null,
+            'signature_bytes' => strlen($signature),
             'signature_valid' => $signatureResult === 1,
             'signature_result' => $signatureResult,
             'issuer_valid' => ($payload['iss'] ?? null) === config('jwt.issuer'),
