@@ -28,14 +28,24 @@ class JwtAuthMiddleware
                 return response()->json(['message' => 'Invalid token algorithm'], 401);
             }
 
-            if (
-                !$this->signatureIsValid($token, $signature) ||
-                ($payload['iss'] ?? null) !== config('jwt.issuer') ||
-                !$this->audienceIsValid($payload['aud'] ?? null) ||
-                empty($payload['sub']) ||
-                $this->tokenIsExpired($payload)
-            ) {
-                return response()->json(['message' => 'Invalid token'], 401);
+            if (!$this->signatureIsValid($token, $signature)) {
+                return response()->json(['message' => 'Invalid token signature'], 401);
+            }
+
+            if (($payload['iss'] ?? null) !== config('jwt.issuer')) {
+                return response()->json(['message' => 'Invalid token issuer'], 401);
+            }
+
+            if (!$this->audienceIsValid($payload['aud'] ?? null)) {
+                return response()->json(['message' => 'Invalid token audience'], 401);
+            }
+
+            if (empty($payload['sub'])) {
+                return response()->json(['message' => 'Invalid token subject'], 401);
+            }
+
+            if ($this->tokenIsExpired($payload)) {
+                return response()->json(['message' => 'Invalid or expired token'], 401);
             }
 
             $request->attributes->set('auth', [
@@ -105,12 +115,18 @@ class JwtAuthMiddleware
             throw new \RuntimeException(openssl_error_string() ?: 'OpenSSL could not read JWT public key');
         }
 
-        return openssl_verify(
+        $result = openssl_verify(
             $header . '.' . $payload,
             $signature,
             $keyResource,
             OPENSSL_ALGO_SHA256
-        ) === 1;
+        );
+
+        if ($result === false) {
+            throw new \RuntimeException(openssl_error_string() ?: 'OpenSSL could not verify JWT signature');
+        }
+
+        return $result === 1;
     }
 
     private function tokenIsExpired(array $payload): bool
