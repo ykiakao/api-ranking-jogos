@@ -50,6 +50,17 @@ Route::get('/health-check-key', function () {
         $formattedPublicKey = "-----BEGIN {$pemType}-----\n"
             . chunk_split($body, 64, "\n")
             . "-----END {$pemType}-----\n";
+    } elseif (preg_match('/-----BEGIN ([A-Z ]*PUBLIC KEY)-----(.*)/s', $formattedPublicKey, $matches)) {
+        $pemType = $matches[1];
+        $bodySource = preg_split('/-----END|END\s+(?:RSA\s+)?PUBLIC\s+KEY/i', $matches[2], 2)[0];
+        $body = preg_replace('/[^A-Za-z0-9+\/=]/', '', $bodySource);
+        $bodyLength = strlen($body);
+
+        if ($bodyLength > 100) {
+            $formattedPublicKey = "-----BEGIN {$pemType}-----\n"
+                . chunk_split($body, 64, "\n")
+                . "-----END {$pemType}-----\n";
+        }
     } elseif (!str_contains($formattedPublicKey, '-----BEGIN')) {
         $body = preg_replace('/[^A-Za-z0-9+\/=]/', '', $formattedPublicKey);
         $bodyLength = strlen($body);

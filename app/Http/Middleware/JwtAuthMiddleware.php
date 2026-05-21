@@ -166,6 +166,18 @@ class JwtAuthMiddleware
                 . "-----END {$type}-----\n";
         }
 
+        if (preg_match('/-----BEGIN ([A-Z ]*PUBLIC KEY)-----(.*)/s', $publicKey, $matches)) {
+            $type = $matches[1];
+            $bodySource = preg_split('/-----END|END\s+(?:RSA\s+)?PUBLIC\s+KEY/i', $matches[2], 2)[0];
+            $body = preg_replace('/[^A-Za-z0-9+\/=]/', '', $bodySource);
+
+            if (strlen($body) > 100) {
+                return "-----BEGIN {$type}-----\n"
+                    . chunk_split($body, 64, "\n")
+                    . "-----END {$type}-----\n";
+            }
+        }
+
         if (!str_contains($publicKey, '-----BEGIN')) {
             $body = preg_replace('/[^A-Za-z0-9+\/=]/', '', $publicKey);
 
