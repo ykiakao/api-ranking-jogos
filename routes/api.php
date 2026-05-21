@@ -30,12 +30,29 @@ Route::get('/health', function () {
 
 Route::get('/health-check-key', function () {
     $rawPublicKey = (string) config('jwt.public_key');
-    $formattedPublicKey = str_replace('\\n', "\n", $rawPublicKey);
+    $formattedPublicKey = trim(str_replace(['\\r\\n', '\\n', '\\r', "\r\n", "\r"], "\n", $rawPublicKey));
+
+    if (
+        preg_match(
+            '/-----BEGIN PUBLIC KEY-----(.*?)-----END PUBLIC KEY-----/s',
+            $formattedPublicKey,
+            $matches
+        )
+    ) {
+        $body = preg_replace('/\s+/', '', $matches[1]);
+        $formattedPublicKey = "-----BEGIN PUBLIC KEY-----\n"
+            . chunk_split($body, 64, "\n")
+            . "-----END PUBLIC KEY-----\n";
+    }
+
     $publicKeyResource = openssl_pkey_get_public($formattedPublicKey);
 
     return response()->json([
         'raw_key_empty' => $rawPublicKey === '',
-        'key_length' => strlen($formattedPublicKey),
+        'raw_key_length' => strlen($rawPublicKey),
+        'formatted_key_length' => strlen($formattedPublicKey),
+        'has_begin_marker' => str_contains($rawPublicKey, '-----BEGIN PUBLIC KEY-----'),
+        'has_end_marker' => str_contains($rawPublicKey, '-----END PUBLIC KEY-----'),
         'openssl_accepted' => $publicKeyResource !== false,
         'openssl_error' => openssl_error_string(),
     ]);

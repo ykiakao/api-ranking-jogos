@@ -103,7 +103,7 @@ class JwtAuthMiddleware
     private function signatureIsValid(string $token, string $signature): bool
     {
         [$header, $payload] = explode('.', $token, 3);
-        $publicKey = str_replace('\\n', "\n", (string) config('jwt.public_key'));
+        $publicKey = $this->normalizePublicKey((string) config('jwt.public_key'));
 
         if ($publicKey === '') {
             throw new \RuntimeException('JWT public key is empty');
@@ -127,6 +127,35 @@ class JwtAuthMiddleware
         }
 
         return $result === 1;
+    }
+
+    private function normalizePublicKey(string $publicKey): string
+    {
+        $publicKey = trim(str_replace(['\\r\\n', '\\n', '\\r', "\r\n", "\r"], "\n", $publicKey));
+
+        if ($publicKey === '') {
+            return '';
+        }
+
+        if (
+            preg_match(
+                '/-----BEGIN PUBLIC KEY-----(.*?)-----END PUBLIC KEY-----/s',
+                $publicKey,
+                $matches
+            )
+        ) {
+            $body = preg_replace('/\s+/', '', $matches[1]);
+
+            if ($body === '') {
+                return '';
+            }
+
+            return "-----BEGIN PUBLIC KEY-----\n"
+                . chunk_split($body, 64, "\n")
+                . "-----END PUBLIC KEY-----\n";
+        }
+
+        return $publicKey;
     }
 
     private function tokenIsExpired(array $payload): bool
