@@ -17,31 +17,61 @@ Route::get('/health', function () {
 
 Route::get('/health-check-key', function () {
     $rawPublicKey = (string) config('jwt.public_key');
-    $formattedPublicKey = trim(str_replace(['\\r\\n', '\\n', '\\r', "\r\n", "\r"], "\n", $rawPublicKey));
+    $formattedPublicKey = trim($rawPublicKey);
 
     if (
-        preg_match(
-            '/-----BEGIN PUBLIC KEY-----(.*?)-----END PUBLIC KEY-----/s',
-            $formattedPublicKey,
-            $matches
-        )
+        (str_starts_with($formattedPublicKey, '"') && str_ends_with($formattedPublicKey, '"')) ||
+        (str_starts_with($formattedPublicKey, "'") && str_ends_with($formattedPublicKey, "'"))
     ) {
-        $body = preg_replace('/\s+/', '', $matches[1]);
-        $formattedPublicKey = "-----BEGIN PUBLIC KEY-----\n"
+        $formattedPublicKey = substr($formattedPublicKey, 1, -1);
+    }
+
+    $formattedPublicKey = trim(str_replace(['\\r\\n', '\\n', '\\r', "\r\n", "\r"], "\n", $formattedPublicKey));
+    $pemType = null;
+    $bodyLength = null;
+
+    if (preg_match('/-----BEGIN ([A-Z ]*PUBLIC KEY)-----(.*?)-----END \1-----/s', $formattedPublicKey, $matches)) {
+        $pemType = $matches[1];
+        $body = preg_replace('/[^A-Za-z0-9+\/=]/', '', $matches[2]);
+        $bodyLength = strlen($body);
+        $formattedPublicKey = "-----BEGIN {$pemType}-----\n"
             . chunk_split($body, 64, "\n")
-            . "-----END PUBLIC KEY-----\n";
+            . "-----END {$pemType}-----\n";
+    } elseif (!str_contains($formattedPublicKey, '-----BEGIN')) {
+        $body = preg_replace('/[^A-Za-z0-9+\/=]/', '', $formattedPublicKey);
+        $bodyLength = strlen($body);
+
+        if ($bodyLength > 100) {
+            $pemType = 'PUBLIC KEY';
+            $formattedPublicKey = "-----BEGIN PUBLIC KEY-----\n"
+                . chunk_split($body, 64, "\n")
+                . "-----END PUBLIC KEY-----\n";
+        }
+    }
+
+    while (openssl_error_string() !== false) {
+        // Clear stale OpenSSL errors before testing the current key.
     }
 
     $publicKeyResource = openssl_pkey_get_public($formattedPublicKey);
+    $openSslErrors = [];
+
+    while (($error = openssl_error_string()) !== false) {
+        $openSslErrors[] = $error;
+    }
 
     return response()->json([
         'raw_key_empty' => $rawPublicKey === '',
         'raw_key_length' => strlen($rawPublicKey),
         'formatted_key_length' => strlen($formattedPublicKey),
+        'pem_type' => $pemType,
+        'pem_body_length' => $bodyLength,
         'has_begin_marker' => str_contains($rawPublicKey, '-----BEGIN PUBLIC KEY-----'),
+        'has_rsa_begin_marker' => str_contains($rawPublicKey, '-----BEGIN RSA PUBLIC KEY-----'),
         'has_end_marker' => str_contains($rawPublicKey, '-----END PUBLIC KEY-----'),
+        'has_rsa_end_marker' => str_contains($rawPublicKey, '-----END RSA PUBLIC KEY-----'),
         'openssl_accepted' => $publicKeyResource !== false,
-        'openssl_error' => openssl_error_string(),
+        'openssl_errors' => $openSslErrors,
     ]);
 });
 

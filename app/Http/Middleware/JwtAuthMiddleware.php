@@ -109,10 +109,11 @@ class JwtAuthMiddleware
             throw new \RuntimeException('JWT public key is empty');
         }
 
+        $this->flushOpenSslErrors();
         $keyResource = openssl_pkey_get_public($publicKey);
 
         if ($keyResource === false) {
-            throw new \RuntimeException(openssl_error_string() ?: 'OpenSSL could not read JWT public key');
+            throw new \RuntimeException($this->openSslErrorMessage('OpenSSL could not read JWT public key'));
         }
 
         $result = openssl_verify(
@@ -123,7 +124,7 @@ class JwtAuthMiddleware
         );
 
         if ($result === false) {
-            throw new \RuntimeException(openssl_error_string() ?: 'OpenSSL could not verify JWT signature');
+            throw new \RuntimeException($this->openSslErrorMessage('OpenSSL could not verify JWT signature'));
         }
 
         return $result === 1;
@@ -131,6 +132,15 @@ class JwtAuthMiddleware
 
     private function normalizePublicKey(string $publicKey): string
     {
+        $publicKey = trim($publicKey);
+
+        if (
+            (str_starts_with($publicKey, '"') && str_ends_with($publicKey, '"')) ||
+            (str_starts_with($publicKey, "'") && str_ends_with($publicKey, "'"))
+        ) {
+            $publicKey = substr($publicKey, 1, -1);
+        }
+
         $publicKey = trim(str_replace(['\\r\\n', '\\n', '\\r', "\r\n", "\r"], "\n", $publicKey));
 
         if ($publicKey === '') {
@@ -139,23 +149,52 @@ class JwtAuthMiddleware
 
         if (
             preg_match(
-                '/-----BEGIN PUBLIC KEY-----(.*?)-----END PUBLIC KEY-----/s',
+                '/-----BEGIN ([A-Z ]*PUBLIC KEY)-----(.*?)-----END \1-----/s',
                 $publicKey,
                 $matches
             )
         ) {
-            $body = preg_replace('/\s+/', '', $matches[1]);
+            $type = $matches[1];
+            $body = preg_replace('/[^A-Za-z0-9+\/=]/', '', $matches[2]);
 
             if ($body === '') {
                 return '';
             }
 
-            return "-----BEGIN PUBLIC KEY-----\n"
+            return "-----BEGIN {$type}-----\n"
                 . chunk_split($body, 64, "\n")
-                . "-----END PUBLIC KEY-----\n";
+                . "-----END {$type}-----\n";
         }
 
-        return $publicKey;
+        if (!str_contains($publicKey, '-----BEGIN')) {
+            $body = preg_replace('/[^A-Za-z0-9+\/=]/', '', $publicKey);
+
+            if (strlen($body) > 100) {
+                return "-----BEGIN PUBLIC KEY-----\n"
+                    . chunk_split($body, 64, "\n")
+                    . "-----END PUBLIC KEY-----\n";
+            }
+        }
+
+        return trim($publicKey) . "\n";
+    }
+
+    private function flushOpenSslErrors(): void
+    {
+        while (openssl_error_string() !== false) {
+            // Clear stale OpenSSL errors before reading the next operation result.
+        }
+    }
+
+    private function openSslErrorMessage(string $fallback): string
+    {
+        $errors = [];
+
+        while (($error = openssl_error_string()) !== false) {
+            $errors[] = $error;
+        }
+
+        return $errors === [] ? $fallback : implode(' | ', $errors);
     }
 
     private function tokenIsExpired(array $payload): bool
