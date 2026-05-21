@@ -45,8 +45,10 @@ class JwtAuthMiddleware
 
             return $next($request);
 
-        } catch (\Exception $e) {
+        } catch (\InvalidArgumentException $e) {
             return response()->json(['message' => 'Invalid or expired token'], 401);
+        } catch (\Throwable $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 
@@ -94,13 +96,19 @@ class JwtAuthMiddleware
         $publicKey = str_replace('\\n', "\n", (string) config('jwt.public_key'));
 
         if ($publicKey === '') {
-            return false;
+            throw new \RuntimeException('JWT public key is empty');
+        }
+
+        $keyResource = openssl_pkey_get_public($publicKey);
+
+        if ($keyResource === false) {
+            throw new \RuntimeException(openssl_error_string() ?: 'OpenSSL could not read JWT public key');
         }
 
         return openssl_verify(
             $header . '.' . $payload,
             $signature,
-            $publicKey,
+            $keyResource,
             OPENSSL_ALGO_SHA256
         ) === 1;
     }
