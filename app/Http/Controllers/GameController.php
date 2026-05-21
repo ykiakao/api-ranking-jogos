@@ -54,6 +54,19 @@ class GameController extends Controller
     }
 
     /**
+     * Ranking por plataforma
+     */
+    public function platformRanking($platform)
+    {
+        $games = Game::where('platform', $platform)
+            ->orderBy('weekly_points', 'desc')
+            ->take(10)
+            ->get();
+
+        return response()->json($games);
+    }
+
+    /**
      * Histórico de ranking
      *
      * Retorna a evolução de um jogo específico ao longo do tempo.
