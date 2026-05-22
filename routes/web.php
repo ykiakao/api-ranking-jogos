@@ -37,12 +37,21 @@ Route::get('/', function () {
                 </div>
                 <div class="auth %s">%s</div>
                 <a href="%s" target="_blank" rel="noreferrer">%s</a>
+                <div class="actions">
+                    <button type="button" data-action="open" data-url="%s">Abrir</button>
+                    <button type="button" data-action="copy" data-url="%s">Copiar</button>
+                    <button type="button" data-action="request" data-auth="%s" data-url="%s">Testar</button>
+                </div>
             </article>',
             e($route['method']),
             e($route['name']),
             $authClass,
             e($route['auth']),
             e($url),
+            e($url),
+            e($url),
+            e($url),
+            e($route['type']),
             e($url),
         );
     })->implode('');
@@ -117,6 +126,53 @@ Route::get('/', function () {
             border: 1px solid var(--panel-border);
             border-radius: 8px;
             background: rgba(23, 33, 61, 0.86);
+        }
+
+        .token-panel {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+            width: min(860px, 100%);
+            margin: 0 auto 28px;
+            padding: 16px;
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            background: rgba(23, 33, 61, 0.82);
+        }
+
+        .token-panel label {
+            grid-column: 1 / -1;
+            color: var(--muted);
+            font-size: 0.92rem;
+            font-weight: 700;
+        }
+
+        .token-panel input {
+            min-width: 0;
+            width: 100%;
+            height: 42px;
+            padding: 0 12px;
+            border: 1px solid var(--panel-border);
+            border-radius: 6px;
+            background: var(--code);
+            color: var(--text);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        }
+
+        button {
+            min-height: 38px;
+            padding: 0 14px;
+            border: 1px solid rgba(255, 216, 74, 0.42);
+            border-radius: 6px;
+            background: rgba(255, 216, 74, 0.12);
+            color: var(--gold);
+            font: inherit;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: rgba(255, 216, 74, 0.2);
         }
 
         .status strong {
@@ -216,6 +272,51 @@ Route::get('/', function () {
             outline: 1px solid var(--gold);
         }
 
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .actions button {
+            flex: 1 1 108px;
+        }
+
+        .result {
+            display: none;
+            margin-top: 28px;
+            padding: 18px;
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            background: rgba(8, 11, 24, 0.9);
+        }
+
+        .result.visible {
+            display: block;
+        }
+
+        .result-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+            color: var(--muted);
+        }
+
+        pre {
+            max-height: 420px;
+            margin: 0;
+            overflow: auto;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            color: #e8edff;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 0.88rem;
+            line-height: 1.55;
+        }
+
         footer {
             margin-top: 34px;
             color: #697399;
@@ -230,6 +331,10 @@ Route::get('/', function () {
             }
 
             .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .token-panel {
                 grid-template-columns: 1fr;
             }
         }
@@ -248,12 +353,104 @@ Route::get('/', function () {
             <span>Service: <strong>api-ranking-jogos</strong></span>
         </section>
 
+        <section class="token-panel" aria-label="Token JWT">
+            <label for="jwt-token">JWT para testar rotas privadas</label>
+            <input id="jwt-token" type="password" autocomplete="off" placeholder="Cole somente o token, sem Bearer">
+            <button type="button" id="save-token">Salvar token</button>
+        </section>
+
         <section class="grid">
             {$cards}
         </section>
 
+        <section id="result" class="result" aria-live="polite">
+            <div class="result-header">
+                <strong id="result-title">Resposta</strong>
+                <span id="result-status"></span>
+            </div>
+            <pre id="result-body"></pre>
+        </section>
+
         <footer>api-ranking-jogos - Railway</footer>
     </main>
+    <script>
+        const tokenInput = document.getElementById('jwt-token');
+        const saveToken = document.getElementById('save-token');
+        const result = document.getElementById('result');
+        const resultTitle = document.getElementById('result-title');
+        const resultStatus = document.getElementById('result-status');
+        const resultBody = document.getElementById('result-body');
+
+        tokenInput.value = localStorage.getItem('rankingJwtToken') || '';
+
+        saveToken.addEventListener('click', () => {
+            localStorage.setItem('rankingJwtToken', tokenInput.value.trim());
+            saveToken.textContent = 'Salvo';
+            setTimeout(() => saveToken.textContent = 'Salvar token', 1400);
+        });
+
+        function showResult(title, status, body) {
+            result.classList.add('visible');
+            resultTitle.textContent = title;
+            resultStatus.textContent = status;
+            resultBody.textContent = body;
+            result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        async function copyText(text) {
+            await navigator.clipboard.writeText(text);
+        }
+
+        document.addEventListener('click', async (event) => {
+            const button = event.target.closest('button[data-action]');
+
+            if (!button) {
+                return;
+            }
+
+            const url = button.dataset.url;
+            const action = button.dataset.action;
+
+            if (action === 'open') {
+                window.open(url, '_blank', 'noreferrer');
+                return;
+            }
+
+            if (action === 'copy') {
+                await copyText(url);
+                const previous = button.textContent;
+                button.textContent = 'Copiado';
+                setTimeout(() => button.textContent = previous, 1200);
+                return;
+            }
+
+            const headers = { Accept: 'application/json' };
+            const authType = button.dataset.auth;
+            const token = tokenInput.value.trim();
+
+            if ((authType === 'jwt' || authType === 'diagnostic') && token) {
+                headers.Authorization = `Bearer ${token}`;
+            }
+
+            if ((authType === 'jwt' || authType === 'diagnostic') && !token) {
+                showResult('Token ausente', '401 local', 'Cole um JWT no campo acima para testar esta rota.');
+                return;
+            }
+
+            try {
+                showResult('Carregando', '...', '');
+                const response = await fetch(url, { headers });
+                const contentType = response.headers.get('content-type') || '';
+                const body = contentType.includes('application/json')
+                    ? JSON.stringify(await response.json(), null, 2)
+                    : await response.text();
+
+                showResult(url, `${response.status} ${response.statusText}`, body);
+            } catch (error) {
+                showResult(url, 'Erro', error.message);
+            }
+        });
+    </script>
 </body>
 </html>
 HTML);
