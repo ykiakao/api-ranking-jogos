@@ -429,7 +429,7 @@ Route::get('/', function () {
             const token = tokenInput.value.trim();
 
             if ((authType === 'jwt' || authType === 'diagnostic') && token) {
-                headers.Authorization = `Bearer ${token}`;
+                headers.Authorization = 'Bearer ' + token;
             }
 
             if ((authType === 'jwt' || authType === 'diagnostic') && !token) {
@@ -445,7 +445,7 @@ Route::get('/', function () {
                     ? JSON.stringify(await response.json(), null, 2)
                     : await response.text();
 
-                showResult(url, `${response.status} ${response.statusText}`, body);
+                showResult(url, response.status + ' ' + response.statusText, body);
             } catch (error) {
                 showResult(url, 'Erro', error.message);
             }
