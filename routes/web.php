@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 Route::get('/', function () {
-    $baseUrl = request()->root();
+    $baseUrl = rtrim((string) config('app.url'), '/') ?: request()->root();
     $routes = [
         ['name' => 'base', 'method' => 'GET', 'path' => '/', 'auth' => 'Sem JWT', 'type' => 'open'],
         ['name' => 'health', 'method' => 'GET', 'path' => '/health', 'auth' => 'Sem JWT', 'type' => 'open'],
