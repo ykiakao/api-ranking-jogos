@@ -5,10 +5,258 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 Route::get('/', function () {
-    return response()->json([
-        'status' => 'ok',
-        'service' => 'api-ranking-jogos',
-    ]);
+    $baseUrl = request()->root();
+    $routes = [
+        ['name' => 'base', 'method' => 'GET', 'path' => '/', 'auth' => 'Sem JWT', 'type' => 'open'],
+        ['name' => 'health', 'method' => 'GET', 'path' => '/health', 'auth' => 'Sem JWT', 'type' => 'open'],
+        ['name' => 'api_health', 'method' => 'GET', 'path' => '/api/health', 'auth' => 'Sem JWT', 'type' => 'open'],
+        ['name' => 'health_check_key', 'method' => 'GET', 'path' => '/api/health-check-key', 'auth' => 'Sem JWT', 'type' => 'open'],
+        ['name' => 'health_check_db', 'method' => 'GET', 'path' => '/api/health-check-db', 'auth' => 'Sem JWT', 'type' => 'open'],
+        ['name' => 'health_check_token', 'method' => 'GET', 'path' => '/api/health-check-token', 'auth' => 'Bearer para diagnostico', 'type' => 'diagnostic'],
+        ['name' => 'ranking_semanal', 'method' => 'GET', 'path' => '/api/v1/rankings/weekly', 'auth' => 'JWT obrigatorio', 'type' => 'jwt'],
+        ['name' => 'ranking_mensal', 'method' => 'GET', 'path' => '/api/v1/rankings/monthly', 'auth' => 'JWT obrigatorio', 'type' => 'jwt'],
+        ['name' => 'ranking_anual', 'method' => 'GET', 'path' => '/api/v1/rankings/yearly', 'auth' => 'JWT obrigatorio', 'type' => 'jwt'],
+        ['name' => 'ranking_plataforma', 'method' => 'GET', 'path' => '/api/v1/rankings/platforms/Steam', 'auth' => 'JWT obrigatorio', 'type' => 'jwt'],
+        ['name' => 'historico_jogador', 'method' => 'GET', 'path' => '/api/v1/rankings/history/1', 'auth' => 'JWT obrigatorio', 'type' => 'jwt'],
+        ['name' => 'mais_jogados', 'method' => 'GET', 'path' => '/api/v1/games/most-played', 'auth' => 'JWT obrigatorio', 'type' => 'jwt'],
+    ];
+
+    $cards = collect($routes)->map(function (array $route) use ($baseUrl) {
+        $url = $baseUrl . ($route['path'] === '/' ? '' : $route['path']);
+        $authClass = match ($route['type']) {
+            'jwt' => 'auth-jwt',
+            'diagnostic' => 'auth-diagnostic',
+            default => 'auth-open',
+        };
+
+        return sprintf(
+            '<article class="route-card">
+                <div class="route-heading">
+                    <span class="method">%s</span>
+                    <h2>%s</h2>
+                </div>
+                <div class="auth %s">%s</div>
+                <a href="%s" target="_blank" rel="noreferrer">%s</a>
+            </article>',
+            e($route['method']),
+            e($route['name']),
+            $authClass,
+            e($route['auth']),
+            e($url),
+            e($url),
+        );
+    })->implode('');
+
+    return response(<<<HTML
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>API Ranking Jogos</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #111225;
+            --panel: #17213d;
+            --panel-border: #27396a;
+            --text: #f5f7ff;
+            --muted: #aab4d4;
+            --gold: #ffd84a;
+            --green: #2bd071;
+            --red: #ff6b6b;
+            --blue: #5aa7ff;
+            --code: #080b18;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top, #1d2040 0, var(--bg) 48rem);
+            color: var(--text);
+        }
+
+        main {
+            width: min(1120px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 40px 0 48px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        h1 {
+            margin: 0;
+            color: var(--gold);
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            letter-spacing: 0;
+            font-weight: 900;
+        }
+
+        header p {
+            margin: 10px 0 0;
+            color: var(--muted);
+            font-size: 1rem;
+        }
+
+        .status {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 14px;
+            width: min(560px, 100%);
+            margin: 28px auto 34px;
+            padding: 14px 18px;
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            background: rgba(23, 33, 61, 0.86);
+        }
+
+        .status strong {
+            color: var(--gold);
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            margin-top: 5px;
+            border-radius: 999px;
+            background: var(--green);
+            box-shadow: 0 0 14px var(--green);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .route-card {
+            min-width: 0;
+            padding: 20px;
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            background: rgba(23, 33, 61, 0.92);
+        }
+
+        .route-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .method {
+            flex: 0 0 auto;
+            padding: 5px 12px;
+            border-radius: 4px;
+            background: #127b3a;
+            color: #d9ffe7;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 0.78rem;
+            font-weight: 800;
+        }
+
+        h2 {
+            min-width: 0;
+            margin: 0;
+            color: var(--gold);
+            font-size: 1.08rem;
+            overflow-wrap: anywhere;
+        }
+
+        .auth {
+            display: inline-flex;
+            margin-bottom: 12px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .auth-open {
+            color: #d9ffe7;
+            background: rgba(43, 208, 113, 0.16);
+        }
+
+        .auth-jwt {
+            color: #ffe1e1;
+            background: rgba(255, 107, 107, 0.16);
+        }
+
+        .auth-diagnostic {
+            color: #dcecff;
+            background: rgba(90, 167, 255, 0.16);
+        }
+
+        a {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border-left: 3px solid var(--gold);
+            border-radius: 5px;
+            background: var(--code);
+            color: #dfe7ff;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 0.84rem;
+            line-height: 1.35;
+            text-decoration: none;
+            overflow-wrap: anywhere;
+        }
+
+        a:hover {
+            color: #ffffff;
+            outline: 1px solid var(--gold);
+        }
+
+        footer {
+            margin-top: 34px;
+            color: #697399;
+            text-align: center;
+            font-size: 0.82rem;
+        }
+
+        @media (max-width: 760px) {
+            main {
+                width: min(100% - 20px, 1120px);
+                padding-top: 28px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <header>
+            <h1>API RANKING JOGOS</h1>
+            <p>Menu de navegacao - rotas GET disponiveis</p>
+        </header>
+
+        <section class="status" aria-label="Status da API">
+            <span class="dot" aria-hidden="true"></span>
+            <span>Status: <strong>ok</strong></span>
+            <span>Service: <strong>api-ranking-jogos</strong></span>
+        </section>
+
+        <section class="grid">
+            {$cards}
+        </section>
+
+        <footer>api-ranking-jogos - Railway</footer>
+    </main>
+</body>
+</html>
+HTML);
 });
 
 Route::get('/health', function () {
