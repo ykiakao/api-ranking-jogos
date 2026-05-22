@@ -24,6 +24,15 @@ Route::prefix('v1')->middleware(['jwt.auth'])->group(function () {
     Route::get('/games/most-played', [GameController::class, 'mostPlayed']);
 });
 
+Route::middleware(['jwt.auth'])->post('/dev/seed-games', function () {
+    app(\Database\Seeders\DatabaseSeeder::class)->run();
+
+    return response()->json([
+        'status' => 'seeded',
+        'games_count' => DB::table('games')->count(),
+    ]);
+});
+
 Route::get('/health', function () {
     return response()->json(['status' => 'ok']);
 });
