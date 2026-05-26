@@ -4,7 +4,7 @@ Microsserviço backend responsável por disponibilizar rankings e métricas de j
 
 ![Laravel](https://img.shields.io/badge/Laravel-10-red)
 ![PHP](https://img.shields.io/badge/PHP-%3E%3D8.1-blue)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?logo=postgresql&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)
 ![Scribe](https://img.shields.io/badge/Docs-Scribe-purple)
 
 ---
