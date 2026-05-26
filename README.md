@@ -39,7 +39,7 @@ O projeto contém apenas o backend da API. A interface visual do usuário final 
 
 * PHP >= 8.1
 * Laravel 10
-* SQLite
+* Postgres
 * Composer
 * Laravel Scribe
 * PHPUnit
